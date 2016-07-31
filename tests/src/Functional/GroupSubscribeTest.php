@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\og\Functional;
 
+use Drupal\Core\Url;
 use Drupal\entity_test\Entity\EntityTest;
 use Drupal\node\Entity\Node;
 use Drupal\og\Entity\OgMembership;
@@ -91,15 +92,27 @@ class GroupSubscribeTest extends BrowserTestBase {
 
   /**
    * Tests 'update group' special permission.
+   *
+   * @dataProvider subscribeAccessProvider
    */
-  public function testSubscribe() {
+  public function testSubscribeAccess($entity_id, $code) {
     $this->drupalLogin($this->user1);
     $options = array(
       'entity_type' => 'node',
-      'entity_id' => $this->group1->id(),
+      'entity_id' => $entity_id,
     );
-    $this->drupalGet($this->group1->toUrl('og.subscribe', $options));
-    $this->assertSession()->statusCodeEquals(200);
+
+    $path = Url::fromRoute('og.subscribe', $options)->toString();
+    $this->drupalGet($path);
+    $this->assertSession()->statusCodeEquals($code);
+  }
+
+  public function subscribeAccessProvider() {
+    return [
+      [$this->group1->id(), 200],
+      [$this->group2->id(), 403],
+      [$this->group3->id(), 403],
+    ];
   }
 
 

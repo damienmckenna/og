@@ -13,6 +13,7 @@ use Drupal\og\OgMembershipInterface;
 use Drupal\simpletest\ContentTypeCreationTrait;
 use Drupal\simpletest\NodeCreationTrait;
 use Drupal\Tests\BrowserTestBase;
+use Symfony\Component\CssSelector\Node\NodeInterface;
 
 /**
  * Tests subscribe to group.
@@ -32,9 +33,26 @@ class GroupSubscribeTest extends BrowserTestBase {
   /**
    * Test entity group.
    *
-   * @var \Drupal\Core\Entity\EntityInterface
+   * @var \Drupal\node\NodeInterface
    */
   protected $group1;
+
+  /**
+   * Test entity group.
+   *
+   * @var \Drupal\node\NodeInterface
+   */
+  protected $group2;
+
+  /**
+   * Test entity group.
+   *
+   * @var \Drupal\node\NodeInterface
+   */
+  protected $group3;
+
+  protected $groupBundle;
+  protected $nonGroupBundle;
 
   /**
    * Test normal user with no connection to the organic group.
@@ -85,8 +103,8 @@ class GroupSubscribeTest extends BrowserTestBase {
     ]);
     $this->group3->save();
 
-    $this->user1 = User::create(['name' => $this->randomString()]);
-    $this->user1->save();
+    $this->normalUser = User::create(['name' => $this->randomString()]);
+    $this->normalUser->save();
 
   }
 
@@ -96,7 +114,7 @@ class GroupSubscribeTest extends BrowserTestBase {
    * @dataProvider subscribeAccessProvider
    */
   public function testSubscribeAccess($entity_id, $code) {
-    $this->drupalLogin($this->user1);
+    $this->drupalLogin($this->normalUser);
     $options = array(
       'entity_type' => 'node',
       'entity_id' => $entity_id,
@@ -107,6 +125,11 @@ class GroupSubscribeTest extends BrowserTestBase {
     $this->assertSession()->statusCodeEquals($code);
   }
 
+  /**
+   * Data provider for ::testSubscribeAccess()
+   *
+   * @return array
+   */
   public function subscribeAccessProvider() {
     return [
       [$this->group1->id(), 200],

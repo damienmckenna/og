@@ -7,6 +7,11 @@ services:
   og.access:
     class: Drupal\og\OgAccess
     arguments: ['@config.factory', '@current_user', '@module_handler', '@og.group.manager', '@og.permission_manager', '@og.membership_manager']
+  og.admin_path.route_subscriber:
+    class: Drupal\og\EventSubscriber\OgAdminRouteSubscriber
+    arguments: ['@config.factory']
+    tags:
+      - { name: event_subscriber }
   og.event_subscriber:
     class: Drupal\og\EventSubscriber\OgEventSubscriber
     arguments: ['@og.permission_manager', '@entity_type.manager', '@entity_type.bundle.info']

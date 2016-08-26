@@ -60,7 +60,7 @@ class RouteSubscriber extends RouteSubscriberBase {
    * {@inheritdoc}
    */
   protected function alterRoutes(RouteCollection $collection) {
-
+    return;
     foreach ($this->entityTypeManager->getDefinitions() as $entity_type_id => $entity_type) {
 
       if (!$og_admin_path = $entity_type->getLinkTemplate('og-admin-routes')) {

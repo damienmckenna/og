@@ -62,7 +62,7 @@ class OgAdminRoutesController extends ControllerBase {
     $content = [];
 
     $event = new OgAdminRoutesEvent();
-    $this->eventDispatcher->dispatch(OgAdminRoutesEventInterface::EVENT_NAME, $event);
+    $event = $this->eventDispatcher->dispatch(OgAdminRoutesEventInterface::EVENT_NAME, $event);
 
     foreach ($event->getRoutes($entity_type_id) as $name => $info) {
       $route_name = "entity.$entity_type_id.og_admin_routes.$name";

@@ -180,7 +180,7 @@ class OgAdminRoutesControllerTest extends UnitTestCase {
    *
    * @covers ::overview
    */
-  public function __testRoutesWithNoAccess() {
+  public function testRoutesWithNoAccess() {
     $this
       ->url
       ->access()

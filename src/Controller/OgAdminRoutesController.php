@@ -9,6 +9,7 @@ use Drupal\Core\Url;
 use Drupal\og\Event\OgAdminRoutesEvent;
 use Drupal\og\Event\OgAdminRoutesEventInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Routing\Route;
 
 /**
  * The OG admin routes controller.

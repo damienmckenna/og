@@ -2,27 +2,13 @@
 
 namespace Drupal\Tests\og\Kernel\Views;
 
-use Drupal\Component\Utility\Xss;
+use Drupal\Component\Utility\Unicode;
 use Drupal\node\Entity\Node;
 use Drupal\node\Entity\NodeType;
 use Drupal\og\Og;
 use Drupal\Tests\views\Kernel\ViewsKernelTestBase;
 use Drupal\user\Entity\User;
-use Drupal\views\Entity\View;
 use Drupal\views\Views;
-use Drupal\views\ViewExecutable;
-use Drupal\views\ViewExecutableFactory;
-use Drupal\views\DisplayPluginCollection;
-use Drupal\views\Plugin\views\display\DefaultDisplay;
-use Drupal\views\Plugin\views\display\Page;
-use Drupal\views\Plugin\views\style\DefaultStyle;
-use Drupal\views\Plugin\views\style\Grid;
-use Drupal\views\Plugin\views\row\Fields;
-use Drupal\views\Plugin\views\query\Sql;
-use Drupal\views\Plugin\views\pager\PagerPluginBase;
-use Drupal\views\Plugin\views\query\QueryPluginBase;
-use Drupal\views_test_data\Plugin\views\display\DisplayTest;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Tests the OG admin Members view.
@@ -40,6 +26,7 @@ class OgAdminMembersViewTest extends ViewsKernelTestBase {
     'field',
     'node',
     'og',
+    'views',
   ];
 
   /**
@@ -117,10 +104,10 @@ class OgAdminMembersViewTest extends ViewsKernelTestBase {
 
 
   /**
-   * Tests the initDisplay() and initHandlers() methods.
+   * Tests the Members table.
    */
-  public function testInitMethods() {
-    $view = Views::getView('test_entity_area');
+  public function testMembersTable() {
+    $view = Views::getView('og_members_overview');
     $preview = $view->preview('default', ['node', $this->group->id()]);
 
     $map = [

@@ -107,8 +107,13 @@ class OgAdminMembersViewTest extends ViewsKernelTestBase {
    * Tests the Members table.
    */
   public function testMembersTable() {
+    /** @var \Drupal\Core\Render\RendererInterface $renderer */
+    $renderer = $this->container->get('renderer');
+
     $view = Views::getView('og_members_overview');
     $preview = $view->preview('default', ['node', $this->group->id()]);
+
+    $this->setRawContent(\Drupal::service('renderer')->renderRoot($preview));
 
     $map = [
       'Name' => '//*[@id="view-name-table-column"]/a/text()',
@@ -117,7 +122,7 @@ class OgAdminMembersViewTest extends ViewsKernelTestBase {
 
     foreach ($map as $value => $xpath) {
       $result = $this->xpath($xpath);
-      $this->assertEquals($value, $result);
+      $this->assertTrue(strpos(trim((string) $result[0]), $value) === 0);
     }
   }
 

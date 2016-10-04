@@ -42,7 +42,14 @@ class OgSelectionWidgetOptionsTest extends BrowserTestBase {
   protected $group2;
 
   /**
-   * Demo user.
+   * A regular, non-member user.
+   *
+   * @var \Drupal\user\Entity\User
+   */
+  protected $user;
+
+  /**
+   * Group member user.
    *
    * @var \Drupal\user\Entity\User
    */
@@ -113,9 +120,14 @@ class OgSelectionWidgetOptionsTest extends BrowserTestBase {
   }
 
   /**
-   * Tests adding groups, and node access.
+   * Tests the selection widget, which in fact asserts access.
    */
-  public function testFields() {
+  public function testSelectionWidget() {
+    $this->drupalLogin($this->user);
+    $this->drupalGet('node/add/group_content');
+    // Non member doesn't have access.
+    $this->assertSession()->statusCodeEquals(403);
+
     $this->drupalLogin($this->groupMemberUser);
     $this->drupalGet('node/add/group_content');
 
